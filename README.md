@@ -1,6 +1,6 @@
 ![SEC network graph](https://raw.github.com/miketahani/sec-revolving-door/master/pogo.png)
 
-Center gray square represents the Securities and Exchange Commission, red squares are former employees of the SEC, and black squares represent the financial institutions they joined after leaving the SEC. The size of the squares represents the number of connections.
+Center gray square represents the Securities and Exchange Commission, blue squares are former employees of the SEC, and white squares represent the financial institutions they joined after leaving the SEC. The size of the squares represents the number of connections.
 
 A simple network graph that illustrates the SEC's "revolving door". Brushing up on creating network graphs and I thought others would find this useful.
 
