@@ -89,17 +89,18 @@
 
       var node = svg.selectAll(".node")
           .data(graph.nodes)
-        .enter().append("circle")
-        // .enter().append("rect")
+        // .enter().append("circle")
+        .enter().append("rect")
           .attr("class", function(d) { return d.type + " node"; })
-          .attr("r", function(d) {
+          .attr("width", function(d) {
             // get all links that contain this node
             d.conn = graph.links.filter(function(link) { 
               return link.source.name == d.name || link.target.name == d.name; 
             }).length;
-            if (d.name === "SEC") return 20;
-            return size(d.conn);
+            if (d.name === "SEC") return d.size = 40;
+            return d.size = size(d.conn) * 2;
           })
+          .attr("height", function(d) { return d.size; })
           .call(force.drag);
 
       node.append("title")
@@ -111,8 +112,10 @@
             .attr("x2", function(d) { return d.target.x; })
             .attr("y2", function(d) { return d.target.y; });
 
-        node.attr("cx", function(d) { return d.x; })
-            .attr("cy", function(d) { return d.y; });
+        // node.attr("cx", function(d) { return d.x; })
+        //     .attr("cy", function(d) { return d.y; });
+        node.attr("x", function(d) { return d.x; })
+            .attr("y", function(d) { return d.y; });
       });
     });
 
