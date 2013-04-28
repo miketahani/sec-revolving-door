@@ -5,17 +5,23 @@
     <title>SEC Revolving Door Network Graph</title>
     <style>
 
+    body {
+      background: #fff;
+    }
+
     .node {
       stroke: #fff;
       stroke-width: 1.5px;
     }
 
     .node.employee {
-      fill: #e25d4e;
+      stroke: #12c4d4;
+      fill: #07464c;
     }
 
     .node.employer {
-      fill: #1a1a1a;
+      stroke: #1a1a1a;
+      fill: #fff;
     }
 
     .node.SEC {
@@ -25,7 +31,8 @@
     .link {
       stroke: #000;
       stroke-opacity: .3;
-      stroke-width: .5;
+      stroke-width: .3;
+      stroke-dasharray: 9, 5;
     }
 
     </style>
@@ -36,8 +43,6 @@
 
     var width = window.innerWidth,
         height = window.innerHeight;
-
-    // var color = d3.scale.category20();
 
     var force = d3.layout.force()
         .charge(-120)
@@ -77,15 +82,14 @@
           return link.source.name == node.name || link.target.name == node.name;
         }).length;
         maxConn = d3.max([maxConn, numLinks]);
-        minConn = d3.min([minConn, numLinks]);
+        // minConn = d3.min([minConn, numLinks]);
       });
-      var size = d3.scale.sqrt().domain([minConn, maxConn]).range([3, 20]);
+      var size = d3.scale.sqrt().domain([0, maxConn]).range([1, 25]);
 
       var link = svg.selectAll(".link")
           .data(graph.links)
         .enter().append("line")
           .attr("class", "link");
-          // .style("stroke-width", function(d) { return Math.sqrt(d.value); });
 
       var node = svg.selectAll(".node")
           .data(graph.nodes)
@@ -98,9 +102,11 @@
               return link.source.name == d.name || link.target.name == d.name; 
             }).length;
             if (d.name === "SEC") return d.size = 40;
-            return d.size = size(d.conn) * 2;
+            return d.size = size(d.conn);
           })
           .attr("height", function(d) { return d.size; })
+          .attr("rx", function(d) { return d.size/5; })
+          .attr("ry", function(d) { return d.size/5; })
           .call(force.drag);
 
       node.append("title")
@@ -114,8 +120,8 @@
 
         // node.attr("cx", function(d) { return d.x; })
         //     .attr("cy", function(d) { return d.y; });
-        node.attr("x", function(d) { return d.x; })
-            .attr("y", function(d) { return d.y; });
+        node.attr("x", function(d) { return d.x - d.size/2; })
+            .attr("y", function(d) { return d.y - d.size/2; });
       });
     });
 
